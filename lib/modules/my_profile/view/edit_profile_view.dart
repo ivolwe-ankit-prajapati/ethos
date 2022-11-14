@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,10 @@ class _EditProfileState extends State<EditProfile> {
       pro_password,countryName,stateName,cityName,zipCode,countryCode,
       country,state,city;
   bool visible=false;
-
+  var imagePicker;
+  var _image;
+  var userImage="";
+  bool imageSelect=true;
   String? countryDropdownValue,stateDropdownValue,cityDropdownValue;
   List countryData = [];
   List stateData = [];
@@ -31,7 +35,7 @@ class _EditProfileState extends State<EditProfile> {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/countryList';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/countryList';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -54,7 +58,7 @@ class _EditProfileState extends State<EditProfile> {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/stateList/$id';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/stateList/$id';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -77,7 +81,7 @@ class _EditProfileState extends State<EditProfile> {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/cityList/$id';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/cityList/$id';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -103,7 +107,7 @@ class _EditProfileState extends State<EditProfile> {
 
       String? token = prefs.getString("token");
       // String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYWthc2hAaXZvbHdlLmNvbSIsImlkIjoiNjI0ODIyMmM0NzlkZDQ2YTE5ZTM5ODE2IiwiaWF0IjoxNjU3NjA5NjM4LCJleHAiOjE2NTc2OTYwMzh9.2-FiO_TLdafOFLwW_9ud6rNRLZMhLjDsOxZ3SX18TdQ";
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/myProfile');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/myProfile');
       http.Response response = await http.get(url, headers: {"Content-Type": "application/json","Authorization": "Bearer $token"});
 
       if(response.statusCode == 200){
@@ -158,7 +162,7 @@ class _EditProfileState extends State<EditProfile> {
     });
 
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/updateProfile';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/updateProfile';
 
 
 
@@ -319,6 +323,7 @@ class _EditProfileState extends State<EditProfile> {
   FocusNode passwordfocus = FocusNode();
   bool iscollect = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool imageProfile=false;
 
   @override
   void initState() {
@@ -326,6 +331,7 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
     getApi();
     getCountryList();
+    imagePicker = new ImagePicker();
   }
 
   @override
@@ -368,10 +374,189 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                 ),
-                CircleAvatar(
-                  radius: 55,
-                  backgroundImage: NetworkImage("${profilePic}"),
+                GestureDetector(
+                  child:
+                  Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.blue,
+                      ),
+                      height: 120,
+                      width: 120,
+                      child: ClipOval(
+                          child:imageSelect? Column(
+                            children: [
+                              Visibility(child: FadeInImage.assetNetwork(
+                                fit: BoxFit.cover,
+                                placeholder: 'assets/images/userimage.png',
+                                image:"$profilePic",
+                                height: 120,
+                                width: 120,
+                              ),visible: imageProfile,
+                              ),
+                              Visibility(child: Image.asset("assets/images/userimage.png",
+                                height: 120,
+                                width: 120, fit: BoxFit.cover,),visible: !imageProfile,
+                              )
+
+                            ],
+                          )
+
+                              :
+                          Image.file(
+                            _image,
+
+                            fit: BoxFit.cover,
+
+
+                          )
+
+                      )
+                  ),
+                  onTap: () async {
+
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(20.0)), //this right here
+                            child: Container(
+                              height: 220,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Center(
+                                        child: Image.asset("assets/images/logo.png",height: 100,)
+                                    ),
+                                    SizedBox(height: 0,),
+                                    Center(child:Text("Please Select the image",),),
+                                    SizedBox(height: 10,),
+                                    Divider(),
+                                    SizedBox(height: 5,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        SizedBox(
+                                          width: 100.0,
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+
+                                                backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(8.0),
+                                                        side: BorderSide(color: Colors.blueAccent)
+                                                    )
+                                                )
+                                            ),
+
+                                            onPressed: () async {
+                                              var source = ImageSource.gallery;
+                                              XFile image = await imagePicker.pickImage(
+                                                  source: source, imageQuality: 50, preferredCameraDevice: CameraDevice.front);
+                                              setState(() {
+
+                                                userImage=image.path;
+                                                HelperFunctions.saveUserprofileImage(
+                                                    userImage.toString());
+                                                _image = File(image.path);
+                                                if(_image.toString().isNotEmpty)
+                                                {
+                                                  setState((){
+                                                    imageSelect=false;
+                                                  });
+
+                                                }
+                                                else{
+                                                  setState(() {
+                                                    imageSelect=true;
+                                                  });
+                                                }
+                                                Navigator.pop(context);
+
+
+                                              });
+
+
+                                            },
+                                            child: Text(
+                                              "Gallery",
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                            //color:  HexColor(blue_color),
+                                          ),
+                                        ),
+
+                                        SizedBox(
+                                          width: 100.0,
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+
+                                                backgroundColor: MaterialStateProperty.all<Color>(HexColor(blue_color)),
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(8.0),
+                                                        side: BorderSide(color: HexColor(blue_color))
+                                                    )
+                                                )
+                                            ),
+                                            onPressed: () async {
+                                              var source = ImageSource.camera;
+                                              XFile image = await imagePicker.pickImage(
+                                                  source: source, imageQuality: 50, preferredCameraDevice: CameraDevice.front);
+                                              setState(() {
+
+                                                userImage=image.path;
+                                                HelperFunctions.saveUserprofileImage(
+                                                    userImage.toString());
+                                                _image = File(image.path);
+                                                if(_image.toString().isNotEmpty)
+                                                {
+                                                  setState((){
+                                                    imageSelect=false;
+                                                  });
+
+                                                }
+                                                else{
+                                                  setState(() {
+                                                    imageSelect=true;
+                                                  });
+                                                }
+                                                Navigator.pop(context);
+
+                                              });
+                                            },
+                                            child: Text(
+                                              "Camera",
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+
+                                          ),
+                                        ),
+                                      ],
+                                    )
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+
+                  },
                 ),
+                // CircleAvatar(
+                //   radius: 55,
+                //   backgroundImage: NetworkImage("${profilePic}"),
+                // ),
                 SizedBox(
                   height: 10,
                 ),
@@ -783,7 +968,77 @@ class _EditProfileState extends State<EditProfile> {
                           onTap: () {
                             FocusScope.of(context).requestFocus(FocusNode());
                             // formKey.currentState.save();
-                            userLogin();
+                            // userLogin();
+                            if(countryDropdownValue==null)
+                            {
+                              Fluttertoast.showToast(
+                                  msg: 'Please Select Country',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.black,
+                                  textColor: Colors.white,
+                                  fontSize: 14.0
+                              );
+
+                            }
+                            else if(stateDropdownValue==null)
+                            {
+                              Fluttertoast.showToast(
+                                  msg: 'Please Select State',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.black,
+                                  textColor: Colors.white,
+                                  fontSize: 14.0
+                              );
+                            }
+                            else if(cityDropdownValue==null)
+                            {
+                              Fluttertoast.showToast(
+                                  msg: 'Please Select City',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.black,
+                                  textColor: Colors.white,
+                                  fontSize: 14.0
+                              );
+
+                            }
+                            //    else if(userImage==""){
+                            //   Fluttertoast.showToast(
+                            //       msg: 'Please Select A Profile Image',
+                            //       toastLength: Toast.LENGTH_LONG,
+                            //       gravity: ToastGravity.CENTER,
+                            //       backgroundColor: HexColor(blue_color),
+                            //       textColor: Colors.white,
+                            //       fontSize: 14.0
+                            //   );
+                            // }
+                            else{
+
+                              Fluttertoast.showToast(
+                                  msg: 'Please Wait!',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.black,
+                                  textColor: Colors.white,
+                                  fontSize: 14.0
+                              );
+                              // userProfileUpdate(firstnameEditingController.text,
+                              //     lastnameEditingController.text,
+                              //     emailEditingController.text,
+                              //     dobEditingController.text,token,userImage.toString(),
+                              //     widget.profilePic,ccmValue,datecmm
+                              // );
+
+
+                            }
+                            print("here");
+                            print(countryDropdownValue);
+                            print(stateDropdownValue);
+                            print(cityDropdownValue);
+                            print("here");
+                            print("here");
                             print("here");
                           },
                           child: Container(

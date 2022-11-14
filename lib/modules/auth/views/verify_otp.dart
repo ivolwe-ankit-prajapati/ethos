@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +40,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
     // setState(() {
     //   visible = true;
     // });
-    var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/SignUpVerifyOtp');
+    var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/Auth/SignUpVerifyOtp');
     // var url =
     //     'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/SignUpVerifyOtp';
 

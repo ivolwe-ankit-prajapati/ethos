@@ -33,7 +33,7 @@ class _AddAddressViewState extends State<AddAddressView> {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/countryList';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/countryList';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -56,7 +56,7 @@ class _AddAddressViewState extends State<AddAddressView> {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/stateList/$id';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/stateList/$id';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -79,7 +79,7 @@ class _AddAddressViewState extends State<AddAddressView> {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/cityList/$id';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/cityList/$id';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -107,7 +107,7 @@ class _AddAddressViewState extends State<AddAddressView> {
       visible = true;
     });
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/addressList';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/addressList';
 
     Map data =       {
       "address": addressLineController.text.toString(),
@@ -128,7 +128,7 @@ class _AddAddressViewState extends State<AddAddressView> {
         "Authorization": "Bearer $token"
       },
     );
-    var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/addAddress',
+    var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/addAddress',
         options: options,data: bod);
 
     if(response.statusCode == 200){

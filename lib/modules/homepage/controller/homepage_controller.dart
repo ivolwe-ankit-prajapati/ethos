@@ -43,7 +43,7 @@ class HomePageController extends GetxController {
         // "Authorization": "Bearer $token"
       },
     );
-    var response = await _dio.get('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/product/categorylist',options: options);
+    var response = await _dio.get('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/product/categorylist',options: options);
     // ApiResponse responsedata = await Application.restApiService?.getApiCall(addressListUrl);
     print("category list>> ");
     // debugPrint(response.data.toString());
@@ -69,8 +69,10 @@ class HomePageController extends GetxController {
     bool isLogin = prefs.getBool('isLogin') ?? false;
     // var formdata = {"business_id": id,"date": "",};
 
-    isLoggedIn.value=prefs.getBool('isLogin') ?? false;
+    isLoggedIn.value= prefs.getBool('isLogin')!;
 
+    print("isLoggedIn.value");
+    print(isLoggedIn.value);
     Options options = Options(
       // contentType: 'application/json',
       headers: {
@@ -127,14 +129,15 @@ class HomePageController extends GetxController {
         "productId": productId,
         "esin": esin,
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/AddwishList');
-      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/AddwishList',options: options,data: data);
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/AddwishList');
+      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/AddwishList',options: options,data: data);
 
       // http.Response response = await http.post(
       //     url,
       //     body: data,
       //
       // );
+
       if(response.statusCode == 200){
         ///data successfully
 
@@ -175,8 +178,8 @@ class HomePageController extends GetxController {
       Map data = {
         "productId": productId,
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/removewishList');
-      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/removewishList',options: options,data: data);
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/removewishList');
+      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/removewishList',options: options,data: data);
 
       // http.Response response = await http.post(
       //     url,

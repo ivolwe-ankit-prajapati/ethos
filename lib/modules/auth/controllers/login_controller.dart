@@ -173,7 +173,7 @@ class LoginController extends GetxController {
         "deviceId": "",
         "deviceType": Platform.isIOS ? '1' : '2'
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/login');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/Auth/login');
       http.Response response = await http.post(
           url,
           body: data

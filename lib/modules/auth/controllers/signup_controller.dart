@@ -214,7 +214,7 @@ class SignupController extends GetxController {
           "Content-Type": "application/json"
         },
       );
-      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/mobilesignUp',
+      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/Auth/mobilesignUp',
           options: options,data: bod);
 
       if(response.statusCode == 200){

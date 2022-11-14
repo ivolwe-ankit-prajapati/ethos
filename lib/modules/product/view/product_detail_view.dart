@@ -3,6 +3,7 @@ import 'package:ethos/modules/wishlist/view/wishlist_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -10,6 +11,7 @@ import 'package:nb_utils/nb_utils.dart' as nb;
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 import '../../../../Constants/Constants.dart';
 import '../../cart/view/cart_view.dart';
+import '../../homepage/controller/homepage_controller.dart';
 import '../../landingpage/view/landingpage_view.dart';
 import '../controller/product_detail_controller.dart';
 import 'package:intl/intl.dart';
@@ -27,12 +29,13 @@ class ProductDetailView extends GetView<ProductDetailController> {
     var width = MediaQuery.of(context).size.width;
 
     ProductDetailController _productDetailController = Get.put(ProductDetailController(productId,esin));
-
+    HomePageController _homePageController = Get.put(HomePageController());
     print(_productDetailController.user.value?.response.toString());
     return Obx(() =>
         WillPopScope(
             onWillPop: () async {
-              Get.off(LandingPage());
+              // Get.off(LandingPage());
+              Get.back();
               // if(lastPage=="homepage")
               // {
               //   Get.off(LandingPage());
@@ -70,9 +73,29 @@ class ProductDetailView extends GetView<ProductDetailController> {
                       onTap: () {
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context) => Cart()));
-                        _productDetailController.addToWishlist("${_productDetailController.user.value?.response?.sId}", "${_productDetailController.user.value?.response?.esin}");
-                        _productDetailController.getWishListCount();
-                        _productDetailController.update();
+                        print(_productDetailController.user.value?.response?.isWishListed);
+                        if(_productDetailController.user.value?.response?.isWishListed==true)
+                          {
+                            Fluttertoast.showToast(
+                                msg: "Already in your wishlist",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                backgroundColor: Colors.black54,
+                                textColor: Colors.white,
+                                timeInSecForIosWeb: 1);
+                          }
+                        else{
+                          _productDetailController.addToWishlist("${_productDetailController.user.value?.response?.sId}", "${_productDetailController.user.value?.response?.esin}")
+                              .whenComplete(() => _productDetailController.getProductDetail("${_productDetailController.user.value?.response?.sId}", "${_productDetailController.user.value?.response?.esin}", "", ""))
+                              .whenComplete(() => _productDetailController.getWishListCount())
+                              .whenComplete(() => _homePageController.getWishListCount())
+                              .whenComplete(() => _homePageController.getProductList())
+                              .whenComplete(() => _productDetailController.update())
+                              .whenComplete(() => _homePageController.update());
+                          // _productDetailController.update();
+                          print(_productDetailController.wishListItemCount);
+                        }
+
                       },
                       child: Visibility(
                         visible: true,
@@ -104,9 +127,8 @@ class ProductDetailView extends GetView<ProductDetailController> {
                         onTap: () {
                           // Navigator.push(context,
                           //     MaterialPageRoute(builder: (context) => Cart()));
-                          _productDetailController.addToCart("${_productDetailController.user.value?.response?.sId}", "1", "${_productDetailController.user.value?.response?.esin}");
-
-                          _productDetailController.getCartCount();
+                          _productDetailController.addToCart("${_productDetailController.user.value?.response?.sId}", "1", "${_productDetailController.user.value?.response?.esin}")
+                              .whenComplete(() => _productDetailController.getCartCount()).whenComplete(() => _homePageController.getCartCount());
                           _productDetailController.update();
                         },
                         child: Container(
@@ -169,20 +191,20 @@ class ProductDetailView extends GetView<ProductDetailController> {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  InkWell(
+                                  Obx(() => InkWell(
                                     onTap: (){
                                       Get.off(WishListView("productDetail"));
                                     },
                                     child: Badge(
                                       badgeColor: Color(0xffE80057),
                                       position: BadgePosition.topEnd(top: -15,end: -12),
-                                      badgeContent: Text('${_productDetailController.wishListItemCount}',style: TextStyle(color: Colors.white),),
+                                      badgeContent: Text(_productDetailController.wishListItemCount.value.toString(),style: TextStyle(color: Colors.white),),
                                       child: SvgPicture.asset(
                                         'assets/images/HeartOut.svg',
                                         height: 16,
                                       ),
                                     ),
-                                  ),
+                                  )),
 
                                   SizedBox(
                                     width: 10,
@@ -363,7 +385,7 @@ class ProductDetailView extends GetView<ProductDetailController> {
                               ),
 
                               Container(
-                                width: 300,
+                                // width: 300,
                                 height: 30,
                                 child: ListView.builder(
                                     padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),

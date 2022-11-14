@@ -57,7 +57,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   bool obscureconf = true;
   Future userLogin(String confirmpassword) async {
     var url =
-        'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/resetPassword';
+        'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/Auth/resetPassword';
 
     // Store all data with Param Name.
     print(confirmpassword);

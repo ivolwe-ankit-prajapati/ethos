@@ -44,7 +44,7 @@ class CartController extends GetxController{
         "Authorization": "Bearer $token"
       },
     );
-    var response = await _dio.get('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/product/cartList?sessionId=&userId=$userId&lang=en',options: options);
+    var response = await _dio.get('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/mobile/product/cartList?sessionId=&userId=$userId&lang=en',options: options);
     // ApiResponse responsedata = await Application.restApiService?.getApiCall(addressListUrl);
     print("cart list>> ");
     // debugPrint(response.data.toString());
@@ -84,7 +84,7 @@ class CartController extends GetxController{
         "id": productId,
         "quantity": quantity,
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/product/addToCart');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/product/addToCart');
       var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/product/updateCart',options: options,data: data);
 
 
@@ -131,7 +131,7 @@ class CartController extends GetxController{
       //   "id": productId,
       //   "quantity": quantity,
       // };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/product/deleteToCart/$productId');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/product/deleteToCart/$productId');
       var response = await _dio.get('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/product/deleteToCart/$productId',options: options);
 
 
@@ -175,7 +175,7 @@ class CartController extends GetxController{
         "productId": productId,
         "esin": esin,
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/AddwishList');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/AddwishList');
       var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/AddwishList',options: options,data: data);
 
       // http.Response response = await http.post(

@@ -75,7 +75,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
     });
 
     var url =
-        'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/forgotPassword';
+        'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/Auth/forgotPassword';
 
     // Store all data with Param Name.
 

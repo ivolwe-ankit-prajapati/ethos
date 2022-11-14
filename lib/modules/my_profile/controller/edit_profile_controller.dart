@@ -47,7 +47,7 @@ class EditProfileController extends GetxController {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/countryList';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/countryList';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -68,7 +68,7 @@ class EditProfileController extends GetxController {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/stateList/$id';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/stateList/$id';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -89,7 +89,7 @@ class EditProfileController extends GetxController {
     // Showing CircularProgressIndicator.
     bool visible = false;
 
-    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/cityList/$id';
+    var url = 'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/cityList/$id';
     String? token = prefs.getString('token');
 // state_key - Delhi
 
@@ -128,7 +128,7 @@ class EditProfileController extends GetxController {
       };
 
       var bod = json.encode(data);
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/mobilesignUp');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/Auth/mobilesignUp');
       http.Response response = await http.post(url, headers: {"Content-Type": "application/json"},body: bod);
       if(response.statusCode == 200){
         ///data successfully
@@ -169,7 +169,7 @@ class EditProfileController extends GetxController {
       isDataLoading(true);
       String? token = prefs.getString("token");
       // String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYWthc2hAaXZvbHdlLmNvbSIsImlkIjoiNjI0ODIyMmM0NzlkZDQ2YTE5ZTM5ODE2IiwiaWF0IjoxNjU3NjA5NjM4LCJleHAiOjE2NTc2OTYwMzh9.2-FiO_TLdafOFLwW_9ud6rNRLZMhLjDsOxZ3SX18TdQ";
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/myProfile');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/myProfile');
       http.Response response = await http.get(url, headers: {"Content-Type": "application/json","Authorization": "Bearer $token"});
 
       if(response.statusCode == 200){

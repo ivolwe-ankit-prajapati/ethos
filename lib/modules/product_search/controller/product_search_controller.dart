@@ -83,8 +83,8 @@ class ProductSearchController extends GetxController {
         "productId": productId,
         "esin": esin,
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/AddwishList');
-      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/AddwishList',options: options,data: data);
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/AddwishList');
+      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/AddwishList',options: options,data: data);
 
       // http.Response response = await http.post(
       //     url,
@@ -131,8 +131,8 @@ class ProductSearchController extends GetxController {
       Map data = {
         "productId": productId,
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/removewishList');
-      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/removewishList',options: options,data: data);
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/removewishList');
+      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/removewishList',options: options,data: data);
 
       // http.Response response = await http.post(
       //     url,

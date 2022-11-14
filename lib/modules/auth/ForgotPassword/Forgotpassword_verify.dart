@@ -61,7 +61,7 @@ class _Forgotpassword_verifyState extends State<Forgotpassword_verify> {
     });
 
     var url =
-        'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/verifyOtp';
+        'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/Auth/verifyOtp';
 
     // Store all data with Param Name.
 
@@ -135,7 +135,7 @@ class _Forgotpassword_verifyState extends State<Forgotpassword_verify> {
     });
 
     var url =
-        'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/Auth/resendOtpForgot';
+        'http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/Auth/resendOtpForgot';
 
     // Store all data with Param Name.
 

@@ -71,7 +71,7 @@ class ProductDetailController extends GetxController{
 
     // var formdata = {"business_id": id,"date": "",};
     // String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYWthc2hAaXZvbHdlLmNvbSIsImlkIjoiNjI0ODIyMmM0NzlkZDQ2YTE5ZTM5ODE2IiwiaWF0IjoxNjU4MTI4MzIyLCJleHAiOjE2NTgyMTQ3MjJ9.uhQy82xvD1DdQlPXcCks1zAa-bX-haAgBJrxUIx_PQg";
-    // var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/addressList');
+    // var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/addressList');
     Options options = Options(
       // contentType: 'application/json',
       headers: {
@@ -225,7 +225,7 @@ class ProductDetailController extends GetxController{
         "sessionId": userId,
         "esin": esin,
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/product/addToCart');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/product/addToCart');
       var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/product/addToCart',options: options,data: data);
 
 
@@ -303,7 +303,6 @@ class ProductDetailController extends GetxController{
     String d=DateFormat("dd/MM/yyyy hh:mm").format(DateTime.parse("2022-03-30T18:56:17.33Z"),);
     return d;
   }
-
   Future<void> addToWishlist(String productId,String esin) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
@@ -320,14 +319,15 @@ class ProductDetailController extends GetxController{
         "productId": productId,
         "esin": esin,
       };
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/AddwishList');
-      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/AddwishList',options: options,data: data);
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/AddwishList');
+      var response = await _dio.post('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/AddwishList',options: options,data: data);
 
       // http.Response response = await http.post(
       //     url,
       //     body: data,
       //
       // );
+
       if(response.statusCode == 200){
         ///data successfully
 
@@ -354,6 +354,7 @@ class ProductDetailController extends GetxController{
     }
   }
 
+
   Future<void> getWishListCount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
@@ -375,7 +376,7 @@ class ProductDetailController extends GetxController{
 
         WishListModel wishListModel = WishListModel.fromJson(response.data);
         // wishList.assignAll(wishListModel.response!);
-        wishListItemCount.value = wishListModel.response!.length;
+        wishListItemCount.value = wishListModel.totalCount!;
 
         print(wishListModel.response!.length);
       } else {

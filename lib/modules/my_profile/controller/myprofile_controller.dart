@@ -22,7 +22,7 @@ class MyProfileController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     // String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYWthc2hAaXZvbHdlLmNvbSIsImlkIjoiNjI0ODIyMmM0NzlkZDQ2YTE5ZTM5ODE2IiwiaWF0IjoxNjU4MTI4MzIyLCJleHAiOjE2NTgyMTQ3MjJ9.uhQy82xvD1DdQlPXcCks1zAa-bX-haAgBJrxUIx_PQg";
-    var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/myProfile');
+    var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/myProfile');
     var response = await http.get(url, headers: {"Content-Type": "application/json","Authorization": "Bearer $token"});
     // final response = await http
     //     .get(Uri.parse('https://jsonplaceholder.typicode.com/photos/3'));
@@ -52,7 +52,7 @@ class MyProfileController extends GetxController {
       isDataLoading(true);
       String? token = prefs.getString("token");
       // String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYWthc2hAaXZvbHdlLmNvbSIsImlkIjoiNjI0ODIyMmM0NzlkZDQ2YTE5ZTM5ODE2IiwiaWF0IjoxNjU3NjA5NjM4LCJleHAiOjE2NTc2OTYwMzh9.2-FiO_TLdafOFLwW_9ud6rNRLZMhLjDsOxZ3SX18TdQ";
-      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/myProfile');
+      var url = Uri.parse('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/myProfile');
       http.Response response = await http.get(url, headers: {"Content-Type": "application/json","Authorization": "Bearer $token"});
 
       if(response.statusCode == 200){
@@ -111,7 +111,7 @@ class MyProfileController extends GetxController {
         "Authorization": "Bearer $token"
       },
     );
-    var response = await _dio.get('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/user/myProfile',options: options);
+    var response = await _dio.get('http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/myProfile',options: options);
     // ApiResponse responsedata = await Application.restApiService?.getApiCall(addressListUrl);
     print("myprofile details>> ");
     // debugPrint(response.data.toString());

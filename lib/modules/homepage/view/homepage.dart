@@ -136,7 +136,7 @@ class HomePage extends GetView<HomePageController> {
                                           //         builder: (context) => Wishlist()));
                                         },
                                         onTap: () {
-                                          if('${_homePageController.isLoggedIn}'==true)
+                                          if(_homePageController.isLoggedIn.value==true)
                                             {
                                               Get.off(WishListView("homepage"));
                                             }
@@ -236,7 +236,7 @@ class HomePage extends GetView<HomePageController> {
                                           },
                                           onTap: () {
 
-                                            if('${_homePageController.isLoggedIn}'==true)
+                                            if(_homePageController.isLoggedIn.value==true)
                                             {
                                               Get.off(CartView("", "", "homepage"));
                                             }
@@ -502,7 +502,7 @@ class HomePage extends GetView<HomePageController> {
       onTap: (){
         print(_homePageController.productList.value[index].productId);
 
-        Get.off(ProductDetailView("${_homePageController.productList.value[index].productId}","${_homePageController.productList.value[index].esin}"));
+        Get.to(ProductDetailView("${_homePageController.productList.value[index].productId}","${_homePageController.productList.value[index].esin}"));
       },
       child: Padding(
         padding: EdgeInsets.only(
@@ -560,14 +560,14 @@ class HomePage extends GetView<HomePageController> {
                         if("${_homePageController.productList.value[index].isWishListed}"=="false") {
                           _homePageController.addToWishlist(
                               "${_homePageController.productList.value[index].productId}",
-                              "${_homePageController.productList.value[index].esin}");
+                              "${_homePageController.productList.value[index].esin}").whenComplete(() => _homePageController.getWishListCount());
                           _homePageController.update();
                           _homePageController.getProductList();
                         }
                         else
                         {
                           _homePageController.removeFromWishlist(
-                              "${_homePageController.productList.value[index].productId}");
+                              "${_homePageController.productList.value[index].productId}").whenComplete(() => _homePageController.getWishListCount());
                           _homePageController.update();
                           _homePageController.getProductList();
                         }

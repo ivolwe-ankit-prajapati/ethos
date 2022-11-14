@@ -20,69 +20,64 @@ class LandingPage extends StatelessWidget {
   TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12);
 
   buildBottomNavigationMenu(context, landingPageController) {
-    return Obx(() => MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-        child: SizedBox(
-          height: 56,
-          child: BottomNavigationBar(
-            showUnselectedLabels: false,
-            showSelectedLabels: false,
-            onTap: landingPageController.changeTabIndex,
-            currentIndex: landingPageController.tabIndex.value,
-            backgroundColor: Color(0xffF7F7F7),
-            unselectedItemColor: Colors.white.withOpacity(0.5),
-            selectedItemColor: Colors.white,
-            unselectedLabelStyle: unselectedLabelStyle,
-            selectedLabelStyle: selectedLabelStyle,
-            items: [
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 4),
-                  child: SvgPicture.asset(
-                    'assets/images/dis_home.svg',
-                  ),
-                ),
-                activeIcon: SvgPicture.asset(
-                  'assets/images/enab_home.svg',
-                  fit: BoxFit.fitHeight,
-                ),
-                label: "",
-                // backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 4),
-                  child: SvgPicture.asset(
-                    'assets/images/pigDis.svg',
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                label: '',
-                // backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
-                activeIcon: SvgPicture.asset(
-                  'assets/images/pigEnab.svg',
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 4),
-                  child: SvgPicture.asset(
-                    'assets/images/dis_tut.svg',
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                label: '',
-                activeIcon: SvgPicture.asset(
-                  'assets/images/enab_tut.svg',
-                  fit: BoxFit.fitHeight,
-                ),
-                // backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
-              ),
-
-            ],
+    return Obx(() => BottomNavigationBar(
+      showUnselectedLabels: false,
+      showSelectedLabels: false,
+      onTap: landingPageController.changeTabIndex,
+      currentIndex: landingPageController.tabIndex.value,
+      backgroundColor: Color(0xffF7F7F7),
+      unselectedItemColor: Colors.white.withOpacity(0.5),
+      selectedItemColor: Colors.white,
+      unselectedLabelStyle: unselectedLabelStyle,
+      selectedLabelStyle: selectedLabelStyle,
+      items: [
+        BottomNavigationBarItem(
+          icon: Container(
+            margin: EdgeInsets.only(bottom: 4),
+            child: SvgPicture.asset(
+              'assets/images/dis_home.svg',
+            ),
           ),
-        )));
+          activeIcon: SvgPicture.asset(
+            'assets/images/enab_home.svg',
+            fit: BoxFit.fitHeight,
+          ),
+          label: "",
+          // backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+        ),
+        BottomNavigationBarItem(
+          icon: Container(
+            margin: EdgeInsets.only(bottom: 4),
+            child: SvgPicture.asset(
+              'assets/images/pigDis.svg',
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+          label: '',
+          // backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+          activeIcon: SvgPicture.asset(
+            'assets/images/pigEnab.svg',
+            fit: BoxFit.fitHeight,
+          ),
+        ),
+        BottomNavigationBarItem(
+          icon: Container(
+            margin: EdgeInsets.only(bottom: 4),
+            child: SvgPicture.asset(
+              'assets/images/dis_tut.svg',
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+          label: '',
+          activeIcon: SvgPicture.asset(
+            'assets/images/enab_tut.svg',
+            fit: BoxFit.fitHeight,
+          ),
+          // backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+        ),
+
+      ],
+    ),);
   }
 
   @override
@@ -98,7 +93,6 @@ class LandingPage extends StatelessWidget {
               HomePage(),
               Categories(),
               MyProfile(),
-
             ],
           )),
         ));
