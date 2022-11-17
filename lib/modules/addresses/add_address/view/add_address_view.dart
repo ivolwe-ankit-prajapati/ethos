@@ -117,6 +117,14 @@ class _AddAddressViewState extends State<AddAddressView> {
       "state": stateDropdownValue.toString(),
       "name": fname.text.toString(),
       "phone": mobile.text.toString(),
+      "phone": {
+        "number": "",
+        "internationalNumber": "",
+        "nationalNumber": "",
+        "e164Number": phoneNumber,
+        "countryCode": "",
+        "dialCode": ""
+      },
       "zipCode": zipcodebill.text.toString(),
     };
 
@@ -335,7 +343,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                             padding: EdgeInsets.only(
                                 left: 24, right: 24, bottom: height * 0.0001),
                             child: AppTextField(
-                                    controller: address,
+                                    controller: addressLineController,
                                     focus: addressfocus,
                                     textFieldType: TextFieldType.NAME,
                                     decoration: inputDecoration(context,
@@ -529,7 +537,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                                   child: Container(
                                     // width: width * 0.4,
                                     child: AppTextField(
-                                        controller: zipcodeController,
+                                        controller: zipcodebill,
                                         focus: zipfocus,
                                         textFieldType: TextFieldType.NAME,
                                         decoration: inputDecoration(
@@ -546,7 +554,6 @@ class _AddAddressViewState extends State<AddAddressView> {
                               ],
                             ),
                           ),
-
                         ],
                       ),
                     )),
@@ -662,7 +669,19 @@ class _AddAddressViewState extends State<AddAddressView> {
                                 if(stateDropdownValue.toString()!="") {
                                   if(cityDropdownValue.toString()!="") {
 
-                                    addAddress();
+                                    if(cityDropdownValue.toString()!="") {
+
+                                      addAddress();
+                                    }
+                                    else{
+                                      Fluttertoast.showToast(
+                                          msg: 'Add Mobile number'.tr,
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.black54,
+                                          textColor: Colors.white,
+                                          timeInSecForIosWeb: 1);
+                                    }
                                   }
                                   else{
                                     Fluttertoast.showToast(

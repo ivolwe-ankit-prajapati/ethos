@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,6 +23,7 @@ class _EditProfileState extends State<EditProfile> {
   String? firstName, lastName, email, profilePic, phoneNumber,
       pro_password,countryName,stateName,cityName,zipCode,countryCode,
       country,state,city;
+  late Dio _dio = Dio(BaseOptions(baseUrl:""));
   bool visible=false;
   var imagePicker;
   var _image;
@@ -152,8 +155,65 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+  Future<void> updateProfile(String image) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    String? email = prefs.getString('email');
 
-  Future userLogin() async {
+    try{
+      Options options = Options(
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+      );
+
+      Map data = {
+        "firstName": !["", null, false, 0].contains(fname.text.toString()) ? fname.text.toString() : firstName,
+        "middleName": "",
+        "LastName": !["", null, false, 0].contains(lname.text.toString()) ? lname.text.toString() : lastName,
+        "email":!["", null, false, 0].contains(emailid.text.toString()) ? emailid.text.toString() : email,
+        "country": !["", null, false, 0].contains(countryDropdownValue.toString()) ? countryDropdownValue.toString() : country,
+        "state": !["", null, false, 0].contains(stateDropdownValue.toString()) ? stateDropdownValue.toString() : state,
+        "city": !["", null, false, 0].contains(cityDropdownValue.toString()) ? cityDropdownValue.toString() : city,
+        "zipcode": !["", null, false, 0].contains(zipcodeController.toString()) ? zipcodeController.toString() : zipCode,
+        "photo1": image,
+        "phone": {
+          "number": "",
+          "internationalNumber": "",
+          "nationalNumber": "",
+          "e164Number": !["", null, false, 0].contains(mobile.toString()) ? mobile.toString() : phoneNumber,
+          "countryCode": "",
+          "dialCode": ""
+        },
+        "lang":"en"
+      };
+      var response = await _dio.post("http://ec2-13-235-73-248.ap-south-1.compute.amazonaws.com/api/mobile/user/updateProfileMobile",options: options,data: data);
+      if(response.statusCode == 200){
+        ///data successfully
+        // var result = jsonDecode(response.data.toString());
+        // print(result);
+        // user_model =  User_Model.fromJson(result);
+        Fluttertoast.showToast(
+            msg: "Profile Updated",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            timeInSecForIosWeb: 1);
+
+      }else{
+        ///error
+      }
+    }catch(e){
+      // log('Error while getting data is $e');
+      print('Error while getting data is $e');
+    }finally{
+
+    }
+  }
+
+  Future userLogin(String image) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Showing CircularProgressIndicator.
     String? token = prefs.getString('token');
@@ -166,15 +226,16 @@ class _EditProfileState extends State<EditProfile> {
 
 
 
-    Map data =       {
+    Map data = {
       "firstName": !["", null, false, 0].contains(fname.text.toString()) ? fname.text.toString() : firstName,
+      "middleName": "",
       "LastName": !["", null, false, 0].contains(lname.text.toString()) ? lname.text.toString() : lastName,
       "email":!["", null, false, 0].contains(emailid.text.toString()) ? emailid.text.toString() : email,
       "country": !["", null, false, 0].contains(countryDropdownValue.toString()) ? countryDropdownValue.toString() : country,
       "state": !["", null, false, 0].contains(stateDropdownValue.toString()) ? stateDropdownValue.toString() : state,
       "city": !["", null, false, 0].contains(cityDropdownValue.toString()) ? cityDropdownValue.toString() : city,
       "zipcode": !["", null, false, 0].contains(zipcodeController.toString()) ? zipcodeController.toString() : zipCode,
-      "image": "",
+      "photo1": image,
       "phone": {
         "number": "",
         "internationalNumber": "",
@@ -431,9 +492,16 @@ class _EditProfileState extends State<EditProfile> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    // Center(
+                                    //     child: Image.asset("assets/images/logo.png",height: 100,)
+                                    // ),
                                     Center(
-                                        child: Image.asset("assets/images/logo.png",height: 100,)
+                                        child: SvgPicture.asset(
+                                          'assets/images/Logo.svg',
+                                          height: 100,
+                                        ),
                                     ),
+
                                     SizedBox(height: 0,),
                                     Center(child:Text("Please Select the image",),),
                                     SizedBox(height: 10,),
@@ -464,8 +532,8 @@ class _EditProfileState extends State<EditProfile> {
                                               setState(() {
 
                                                 userImage=image.path;
-                                                HelperFunctions.saveUserprofileImage(
-                                                    userImage.toString());
+                                                // HelperFunctions.saveUserprofileImage(
+                                                //     userImage.toString());
                                                 _image = File(image.path);
                                                 if(_image.toString().isNotEmpty)
                                                 {
@@ -480,10 +548,7 @@ class _EditProfileState extends State<EditProfile> {
                                                   });
                                                 }
                                                 Navigator.pop(context);
-
-
                                               });
-
 
                                             },
                                             child: Text(
@@ -500,11 +565,11 @@ class _EditProfileState extends State<EditProfile> {
                                           child: ElevatedButton(
                                             style: ButtonStyle(
 
-                                                backgroundColor: MaterialStateProperty.all<Color>(HexColor(blue_color)),
+                                                backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
                                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                     RoundedRectangleBorder(
                                                         borderRadius: BorderRadius.circular(8.0),
-                                                        side: BorderSide(color: HexColor(blue_color))
+                                                        side: BorderSide(color: Colors.blueAccent)
                                                     )
                                                 )
                                             ),
@@ -515,8 +580,8 @@ class _EditProfileState extends State<EditProfile> {
                                               setState(() {
 
                                                 userImage=image.path;
-                                                HelperFunctions.saveUserprofileImage(
-                                                    userImage.toString());
+                                                // HelperFunctions.saveUserprofileImage(
+                                                //     userImage.toString());
                                                 _image = File(image.path);
                                                 if(_image.toString().isNotEmpty)
                                                 {
@@ -966,9 +1031,22 @@ class _EditProfileState extends State<EditProfile> {
                           BorderRadius.circular(10),
                           splashColor: Colors.grey,
                           onTap: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            // formKey.currentState.save();
-                            // userLogin();
+                            // FocusScope.of(context).requestFocus(FocusNode());
+                            // formKey.currentState!.save();
+                            String base64Image = "";
+                            if(_image==null)
+                              {
+                                base64Image = "";
+                              }
+                            else{
+                              final bytes = _image.readAsBytesSync();
+
+                              base64Image =  "data:image/png;base64,"+base64Encode(bytes);
+                            }
+
+
+                            // print(base64Image);
+
                             if(countryDropdownValue==null)
                             {
                               Fluttertoast.showToast(
@@ -1030,16 +1108,26 @@ class _EditProfileState extends State<EditProfile> {
                               //     dobEditingController.text,token,userImage.toString(),
                               //     widget.profilePic,ccmValue,datecmm
                               // );
+                              if(base64Image==null)
+                                {
+                                  // userLogin("");
+                                  updateProfile("");
+                                }
+                              else
+                                {
+                                  // userLogin(base64Image);
+                                  updateProfile(base64Image);
+                                }
 
 
                             }
-                            print("here");
-                            print(countryDropdownValue);
-                            print(stateDropdownValue);
-                            print(cityDropdownValue);
-                            print("here");
-                            print("here");
-                            print("here");
+                            // print("here");
+                            // print(countryDropdownValue);
+                            // print(stateDropdownValue);
+                            // print(cityDropdownValue);
+                            // print("here");
+                            // print("here");
+                            // print("here");
                           },
                           child: Container(
                             width: width * 0.4,
